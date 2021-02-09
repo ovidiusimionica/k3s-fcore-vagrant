@@ -3,3 +3,6 @@
 fcct*
 *.ign
 *~
+config_libvirt_network.xml
+config.rb
+*.fcc

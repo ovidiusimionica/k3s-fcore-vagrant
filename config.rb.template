@@ -1,0 +1,12 @@
+# Defaults for config options defined in CONFIG
+$num_instances = 1
+$instance_name_prefix = "fcore"
+$ip_base = "172.17.8"
+$enable_serial_logging = false
+$share_home = false
+$vm_gui = false
+$vm_memory = 1024
+$vm_cpus = 1
+$vb_cpuexecutioncap = 100
+$shared_folders = {}
+$forwarded_ports = {}
