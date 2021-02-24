@@ -30,7 +30,6 @@ CONFIG_LIBVIRT_NETWORK = File.join(File.dirname(__FILE__), "config_libvirt_netwo
 $num_instances = 1
 $instance_name_prefix = "fcore"
 $ip_base = "172.17.8"
-$token = "K10e0bc9b19f26e765a6bbb5a9919f8d47878d33761248f264062927fb7ba547472::server:fb35373a4f21d11811ee4a14e91efd81"
 $enable_serial_logging = false
 $share_home = false
 $vm_gui = false
@@ -98,7 +97,6 @@ file_names.each do |file_name|
   # replace placeholders in fcc file
   text = File.read(file_name+".template")
   new_contents = text.gsub(/\${server}/, "#{$ip_base}.101")
-  new_contents = new_contents.gsub(/\${token}/, "#{$token}")
   new_contents = new_contents.gsub(/\${instance_prefix}/, "#{$instance_name_prefix}")
   
   # To write changes to the file, use:
