@@ -1,0 +1,17 @@
+{
+  "name": "fedora-coreos",
+  "description": "Fedora CoreOS 64-bit.",
+  "versions": [
+    {
+      "version": "0",
+      "providers": [
+        {
+          "name": "libvirt",
+          "url": ".build/fedora-coreos",
+          "checksum_type": "none",
+          "checksum": "foo"
+        }
+      ]
+    }
+  ]
+}

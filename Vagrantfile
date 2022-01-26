@@ -141,19 +141,23 @@ Vagrant.configure("2") do |config|
     v.functional_vboxsf     = false
   end
 
-  # create the virtual network before vagrant does because of the dhcp limitations with fedora core
   config.vm.provider :libvirt do |lv|
     text = File.read("#{CONFIG_LIBVIRT_NETWORK}.template")
     new_contents = text.gsub(/\${ip_base}/, "#{$ip_base}")
     # To write changes to the file, use:
     File.open(CONFIG_LIBVIRT_NETWORK, "w") {|file| file.puts new_contents}
-    system "virtsh net-destroy --network ignit"
-    system "virtsh net-undefine --network ignit"
-    system "virtsh net-create --file #{CONFIG_LIBVIRT_NETWORK}"
   end
-  
 
-    (1..$num_instances).each do |i|
+  config.trigger.before :up do |trigger|
+      trigger.name = "Hello world"
+      trigger.info = "I am running network provisioning before vagrant up!!"
+      trigger.only_on = "#{$instance_name_prefix}-01"
+      trigger.run = {inline: "bash -c 'virsh net-destroy --network ignit > /dev/null 2>&1 || true ; virsh net-undefine --network ignit > /dev/null 2>&1 || true; virsh net-create --file #{CONFIG_LIBVIRT_NETWORK}'"}
+  end
+
+
+  (1..$num_instances).each do |i|
+
     config.vm.define vm_name = "%s-%02d" % [$instance_name_prefix, i] do |config|
       config.vm.hostname = vm_name
 
@@ -220,6 +224,7 @@ Vagrant.configure("2") do |config|
         else
           #install k3s worker
           lv.qemuargs :value => "name=opt/com.coreos/config,file=#{CONFIG_IGN_W}"
+          config.vm.network :private_network, libvirt__network_name: "ignit"
         end
         
       end
@@ -232,13 +237,14 @@ Vagrant.configure("2") do |config|
       
       # Uncomment below to enable NFS for sharing the host machine into the coreos-vagrant VM.
       # config.vm.synced_folder ".", "/opt/shared", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
-      $shared_folders.each_with_index do |(host_folder, guest_folder), index|
-        config.vm.synced_folder host_folder.to_s, guest_folder.to_s, id: "core-share%02d" % index, nfs: true, mount_options: ['nolock,vers=3,udp']
-      end
+      # $shared_folders.each_with_index do |(host_folder, guest_folder), index|
+      #   config.vm.synced_folder host_folder.to_s, guest_folder.to_s, id: "core-share%02d" % index, nfs: true, mount_options: ['nolock,vers=3,udp']
+      # end
 
-      if $share_home
-        config.vm.synced_folder ENV['HOME'], ENV['HOME'], id: "home", :nfs => true, :mount_options => ['nolock,vers=3,udp']
-      end
+      config.vm.synced_folder '.', '/vagrant', disabled: true
+      # if $share_home
+      #   config.vm.synced_folder ENV['HOME'], ENV['HOME'], id: "home", :nfs => true, :mount_options => ['nolock,vers=3,udp']
+      # end
       
     end
   end

@@ -88,7 +88,10 @@ storage:
         inline: |
           #!/usr/bin/env sh
           main() {
-            scp -o "StrictHostKeyChecking no" -i /root/.ssh/id_ed25519 core@${server}:/opt/node-token /opt/node-token
+            for i in 1 2 3 4 5; do
+              scp -o "StrictHostKeyChecking no" -i /root/.ssh/id_ed25519 core@${server}:/opt/node-token /opt/node-token && break;
+              sleep 15;
+            done  
             return 0
           }
           main          
