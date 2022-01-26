@@ -12,7 +12,7 @@ build_box() {
     URL="https://builds.coreos.fedoraproject.org/prod/streams/$STREAM/builds/$VERSION/$ARCH/fedora-coreos-$VERSION-qemu.$ARCH.qcow2.xz"
     echo $URL
     mkdir -p $BUILD_DIR
-#    curl -SL $URL | xz -d -c > $BUILD_DIR/box.img
+    curl -SL $URL | xz -d -c > $BUILD_DIR/box.img
     cat ./box_metadata_libvirt.json > $BUILD_DIR/metadata.json
     cat ./box_vagrantfile_libvirt > $BUILD_DIR/Vagrantfile
     tar czvf $BUILD_DIR/$BOX -C $BUILD_DIR box.img metadata.json Vagrantfile
