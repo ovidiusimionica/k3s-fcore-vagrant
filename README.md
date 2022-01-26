@@ -19,10 +19,6 @@ After setup is complete you will have a K3S cluster featuring one master node an
 
 2) Clone this project and get it running!
 
-```
-git clone https://github.com/ovidiusimionica/k3s-fcore-vagrant/
-cd k3s-fcore-vagrant
-```
 
 3) Configuration
 
