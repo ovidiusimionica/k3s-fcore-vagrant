@@ -37,7 +37,7 @@ Please observe the setting *instance_name_prefix*
 4) Startup and SSH
 
 ``vagrant up`` triggers vagrant to automatically download the latest Fedora CoreOS image (if necessary) and launch the instance
-I use  Fedora CoreOS Configuration files to provision the vms therefor the fcct transpiler too to ignition format is required and automatically downloaded. 
+I use  Fedora CoreOS Configuration files to provision the vms therefor the fcct transpiler to ignition format is required and automatically downloaded. 
 
 
 There are three "providers" for Vagrant with slightly different instructions.
