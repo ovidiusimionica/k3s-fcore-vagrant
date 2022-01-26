@@ -44,6 +44,11 @@ Follow one of the following two options:
 **KVM / VirtualBox Provider**
 
 The KVM / VirtualBox provider is the default Vagrant provider. Use this if you are unsure.
+If you have both installed then use/ set the environmnt variable e.g.:
+```
+export VAGRANT_DEFAULT_PROVIDER=libvirt 
+```
+
 
 ```
 vagrant up
