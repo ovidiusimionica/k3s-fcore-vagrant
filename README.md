@@ -17,22 +17,24 @@ After setup is complete you will have a K3S cluster featuring one master node an
 * [VirtualBox][virtualbox] -> for Windows VirtualBox setup
 * [Vagrant][vagrant] 1.6.3 or greater
 
-2) Clone this project and get it running!
+2) Clone this project to get it running!
 
 
 3) Configuration
 
 Copy ``config.rb.template`` as ``config.rb``. Open the new file and you can customize:
+
 * *num_instances* 
-  * -> minimum value 1: will create one master node only
-  * -> n>1: will create one master node and n-1 worker nodes
+    * -> minimum value 1: will create one master node only
+    * -> n>1: will create one master node and n-1 worker nodes
 * *ip_base* -> virtual network ip specification
 * *vm_memory* -> RAM for VMs
 * *vm_cpus* -> CPU for VMs 
 
+Please observe the setting *instance_name_prefix*
 
 
-3) Startup and SSH
+4) Startup and SSH
 
 ``vagrant up`` triggers vagrant to automatically download the latest Fedora CoreOS image (if necessary) and launch the instance
 I use  Fedora CoreOS Configuration files to provision the vms therefor the fcct transpiler too to ignition format is required and automatically downloaded. 
@@ -41,10 +43,10 @@ I use  Fedora CoreOS Configuration files to provision the vms therefor the fcct 
 There are three "providers" for Vagrant with slightly different instructions.
 Follow one of the following two options:
 
-**KVM / VirtualBox Provider**
+**KVM / VirtualBox Provider (!!! only KVM is currently working !!!)**
 
 The KVM / VirtualBox provider is the default Vagrant provider. Use this if you are unsure.
-If you have both installed then use/ set the environmnt variable e.g.:
+If you have both installed then use/ set the environment variable e.g.:
 ```
 export VAGRANT_DEFAULT_PROVIDER=libvirt 
 ```
@@ -52,7 +54,7 @@ export VAGRANT_DEFAULT_PROVIDER=libvirt
 
 ```
 vagrant up
-vagrant ssh <instance_name>
+vagrant ssh <instance_name_prefix>-01
 ```
 
 **VMware Provider**
@@ -63,18 +65,18 @@ If you use this provider follow these instructions.
 VMware Fusion:
 ```
 vagrant up --provider vmware_fusion
-vagrant ssh <instance_name>
+vagrant ssh <instance_name_prefix>-01
 ```
 
 VMware Workstation:
 ```
 vagrant up --provider vmware_workstation
-vagrant ssh <instance_name>
+vagrant ssh <instance_name_prefix>-01
 ```
 
 
 
-4) Get started [using K3S][using-k3s]
+5) Get started [using K3S][using-k3s]
 
 
 ssh to master node 
@@ -90,4 +92,9 @@ kubectl get nodes
 
 ## Troubleshooting
 If vagrant fails to run successfully, first make sure that the latest version of the project has been downloaded, then run
-`vagrant destroy -f` to remove old machines, `./build_box.sh[bat] fedora-coreos` to update the OS box.
+
+```
+vagrant destroy -f 
+rm -f .build/fedora-coreos
+./build_box.sh fedora-coreos
+```
